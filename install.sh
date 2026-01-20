@@ -226,6 +226,52 @@ case "$config_choice" in
         ;;
 esac
 
+# Auto-start Hyprland prompt
+echo -e "${MAGENTA}╔══════════════════════════════════════════════════════════╗${NC}"
+echo -e "${MAGENTA}║${NC}  ${BOLD}Auto-start Configuration${NC}                             ${MAGENTA}║${NC}"
+echo -e "${MAGENTA}╚══════════════════════════════════════════════════════════╝${NC}"
+echo ""
+echo -e "${CYAN}Do you want Hyprland to start automatically on login?${NC}"
+echo -e "${CYAN}This will add 'start-hyprland' to your shell profile.${NC}"
+echo ""
+echo -e "${YELLOW}Enable auto-start? ${NC}${BOLD}(y/n)${NC}"
+read -rsn1 autostart_choice
+
+case "$autostart_choice" in
+    y|Y)
+        echo -e "\n${YELLOW}[*] Configuring auto-start...${NC}"
+        
+        # Detect shell
+        SHELL_RC=""
+        if [ -n "$BASH_VERSION" ]; then
+            SHELL_RC="$HOME/.bashrc"
+        elif [ -n "$ZSH_VERSION" ]; then
+            SHELL_RC="$HOME/.zshrc"
+        else
+            SHELL_RC="$HOME/.profile"
+        fi
+        
+        # Check if auto-start is already configured
+        if grep -q "start-hyprland" "$SHELL_RC" 2>/dev/null; then
+            echo -e "${YELLOW}[!] Auto-start already configured in $SHELL_RC${NC}\n"
+        else
+            # Add auto-start to shell profile
+            echo "" >> "$SHELL_RC"
+            echo "# Auto-start Hyprland on TTY1" >> "$SHELL_RC"
+            echo 'if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then' >> "$SHELL_RC"
+            echo "  exec start-hyprland" >> "$SHELL_RC"
+            echo "fi" >> "$SHELL_RC"
+            
+            echo -e "${GREEN}[+] Auto-start configured in $SHELL_RC${NC}"
+            echo -e "${CYAN}[*] Hyprland will start automatically on TTY1${NC}\n"
+        fi
+        ;;
+    *)
+        echo -e "\n${CYAN}[!] Auto-start not configured${NC}"
+        echo -e "${CYAN}You can manually run 'start-hyprland' after login${NC}\n"
+        ;;
+esac
+
 # Reboot prompt
 echo -e "${YELLOW}${BOLD}RECOMMENDED:${NC} ${CYAN}A reboot is required for some configurations to take effect.${NC}"
 echo -e "${CYAN}This ensures all services and portals are properly loaded.${NC}"
