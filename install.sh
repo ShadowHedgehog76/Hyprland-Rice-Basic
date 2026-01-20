@@ -49,9 +49,24 @@ sudo pacman -S --needed --noconfirm \
     uwsm \
     polkit-kde-agent \
     qt5-wayland \
-    qt6-wayland
+    qt6-wayland \
+    virtualbox-guest-utils \
+    xf86-video-vmware
 
-echo -e "${GREEN}[+] Core packages installed successfully!${NC}\n"
+echo -e "${GREEN}[+] Core packages installed successfully!${NC}"
+
+# Enable VirtualBox guest services if running in VirtualBox
+if systemd-detect-virt -q; then
+    VIRT_TYPE=$(systemd-detect-virt)
+    if [ "$VIRT_TYPE" = "oracle" ] || [ "$VIRT_TYPE" = "kvm" ]; then
+        echo -e "${BLUE}[*] Virtual machine detected, enabling guest services...${NC}"
+        sudo systemctl enable vboxservice.service 2>/dev/null || true
+        sudo systemctl start vboxservice.service 2>/dev/null || true
+        echo -e "${GREEN}[+] VirtualBox guest services enabled${NC}"
+    fi
+fi
+
+echo ""
 
 # Interactive menu for additional packages
 declare -A packages=(
