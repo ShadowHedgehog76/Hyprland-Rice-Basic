@@ -42,7 +42,14 @@ sudo pacman -S --needed --noconfirm \
     pavucontrol \
     polkit-gnome \
     xdg-desktop-portal-hyprland \
-    xdg-desktop-portal-gtk
+    xdg-desktop-portal-gtk \
+    dunst \
+    grim \
+    slurp \
+    uwsm \
+    polkit-kde-agent \
+    qt5-wayland \
+    qt6-wayland
 
 echo -e "${GREEN}[+] Core packages installed successfully!${NC}\n"
 
