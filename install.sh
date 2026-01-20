@@ -273,7 +273,7 @@ case "$autostart_choice" in
             # Add auto-start to shell profile
             echo "" >> "$SHELL_RC"
             echo "# Auto-start Hyprland on TTY1" >> "$SHELL_RC"
-            echo 'if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then' >> "$SHELL_RC"
+            echo 'if [ -z "$WAYLAND_DISPLAY" ] && [ "${XDG_VTNR:-0}" -eq 1 ]; then' >> "$SHELL_RC"
             echo "  exec start-hyprland" >> "$SHELL_RC"
             echo "fi" >> "$SHELL_RC"
             
