@@ -1,0 +1,79 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 32,
+  "spacing": 8,
+
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": [
+    "tray",
+    "bluetooth",
+    "network",
+    "pulseaudio",
+    "battery"
+  ],
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "format-icons": {
+      "active": "",
+      "default": ""
+    }
+  },
+
+  "clock": {
+    "format": " {:%H:%M}",
+    "tooltip-format": "{:%A %d %B %Y}"
+  },
+
+  "bluetooth": {
+    "format-on": " on",
+    "format-off": " off",
+    "format-connected": " {num_connections}",
+    "tooltip-format": "Bluetooth",
+    "on-click": "blueman-manager"
+  },
+
+  "network": {
+    "format-wifi": " {signalStrength}%",
+    "format-ethernet": "󰈀 wired",
+    "format-disconnected": "󰖪 off",
+    "tooltip-format-wifi": "{essid}",
+    "on-click": "nm-connection-editor"
+  },
+
+  "pulseaudio": {
+    "format": " {volume}%",
+    "format-muted": " muted",
+    "on-click": "pavucontrol"
+  },
+
+  "battery": {
+    "bat": "BAT1",
+    "adapter": "ACAD",
+
+    "states": {
+      "warning": 20,
+      "critical": 10
+    },
+
+    "format": "{icon} {capacity}%",
+    "format-charging": " {icon} {capacity}%",
+    "format-plugged": " {icon} {capacity}%",
+
+    "format-icons": {
+      "charging": ["", "", "", "", ""],
+      "discharging": ["", "", "", "", ""],
+      "plugged": ["", "", "", "", ""]
+    },
+
+    "tooltip": true,
+    "on-click": "sh -c 'choice=$(printf \"⏻ Éteindre\n Redémarrer\n󰤄 Veille\n󰍃 Verrouiller\" | wofi --dmenu --prompt \"Alimentation\"); case \"$choice\" in \"⏻ Éteindre\") poweroff ;; \" Redémarrer\") reboot ;; \"󰤄 Veille\") systemctl suspend ;; \"󰍃 Verrouiller\") hyprlock ;; esac'"
+  },
+
+  "tray": {
+    "spacing": 8
+  }
+}
